@@ -1,0 +1,56 @@
+server:
+  port: 8086
+spring:
+  security:
+    basic:
+      enabled: false
+    ignored: /**
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: my-provider
+            client-id: bgunduzservices-rest-api
+            client-secret: sIMI8GgumS6iXKgLz6GZhq8jiNApl9Vg
+            authorization-grant-type: authorization_code
+        provider:
+          my-provider:
+            issuer-uri: http://localhost:8080/realms/bgunduzservices
+            jwk-set-uri: http://localhost:8080/realms/bgunduzservices/protocol/openid-connect/certs
+  servlet:
+    multipart:
+      max-file-size: 2048MB
+      max-request-size: 2048MB
+      enabled: true
+  application:
+    name: pageservices
+  datasource:
+    username: 'bgunduz'
+    url: jdbc:postgresql://localhost:5432/page-services
+    password: 'password'
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
+jwt:
+  auth:
+    converter:
+      resource-id: pageservices-client
+      principal-attribute: preferred_username
+eureka:
+  client:
+    service-url:
+      defaultZone: http://bgunduz:passwd@localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
+
+bgunduzservices:
+  media:
+    image:
+      uri: "/home/bgunduz/tmp/bgunduzservices"

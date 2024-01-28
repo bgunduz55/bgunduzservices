@@ -1,0 +1,57 @@
+server:
+  port: 8083
+  max-http-header-size: 10MB
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: customer
+          uri: lb://CUSTOMERS
+          predicates:
+            - Path=/api/v1/customers/**
+        - id: fraud
+          uri: lb://FRAUD
+          predicates:
+            - Path=/api/v1/fraud-check/**
+        - id: pageservices
+          uri: lb://PAGESERVICES
+          predicates:
+            - Path=/api/v1/page-services/**
+#        - id: keycloak
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/**
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: my-provider
+            client-id: bgunduzservices-rest-api
+            client-secret: sIMI8GgumS6iXKgLz6GZhq8jiNApl9Vg
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8083/login/oauth2/code/{registrationId}"
+        provider:
+          my-provider:
+            issuer-uri: http://localhost:8080/realms/bgunduzservices
+            jwk-set-uri: http://localhost:8080/realms/bgunduzservices/protocol/openid-connect/certs
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://bgunduz:passwd@localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
+
+jwt:
+  secret: 9a8fc392dd1a4127d2bc30d6ddb8d205b645fb20f817bb4c9890468c7506300c

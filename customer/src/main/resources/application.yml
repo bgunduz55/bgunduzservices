@@ -1,0 +1,28 @@
+server:
+  port: 8082
+  max-http-header-size: 10MB
+
+spring:
+  application:
+    name: customers
+  datasource:
+    username: 'bgunduz'
+    url: jdbc:postgresql://localhost:5432/customer
+    password: 'password'
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://bgunduz:passwd@localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
